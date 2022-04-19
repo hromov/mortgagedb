@@ -18,7 +18,7 @@ var banks_data = []Bank{
 
 type Bank struct {
 	gorm.Model
-	// ID       string  `json:"id"`
+	ID       uint    `json:"id"`
 	Name     string  `json:"name"`
 	Interest float32 `json:"interest"`
 	MaxLoan  int     `json:"max_loan"`
@@ -54,4 +54,24 @@ func List() (banks []Bank) {
 	db.Find(&banks)
 	// log.Println("results = ", results)
 	return banks
+}
+
+func Create(b Bank) Bank {
+	db.Create(&b)
+	return b
+}
+
+func Delete(ID uint) error {
+	if err := db.Delete(&Bank{ID: ID}).Error; err != nil {
+		return err
+	}
+	return nil
+}
+
+func Save(b Bank) error {
+	// db.First(&b)
+	if err := db.Save(&b).Error; err != nil {
+		return err
+	}
+	return nil
 }
